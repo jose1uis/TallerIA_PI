@@ -1,0 +1,13 @@
+<h2>Recomendador de películas</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="prompt" placeholder="Describe una película...">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if result %}
+    <h3>Película recomendada:</h3>
+    <p>{{ result.title }}</p>
+    <img src="{{ result.image.url }}" width="200">
+{% endif %}

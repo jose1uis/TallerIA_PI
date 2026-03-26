@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 import matplotlib
 import io
 import urllib, base64
+import numpy as np
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
 def home(request):
     #return HttpResponse('<h1>Welcome to Home Page</h1>')
@@ -123,3 +127,42 @@ def generate_bar_chart(data, xlabel, ylabel):
     buffer.close()
     graphic = base64.b64encode(image_png).decode('utf-8')
     return graphic
+
+def recommend_movie(request):
+    result = None
+
+    if request.method == "POST":
+        prompt = request.POST.get("prompt")
+
+        load_dotenv()
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+        # 🔥 Generar embedding del prompt
+        response = client.embeddings.create(
+            input=[prompt],
+            model="text-embedding-3-small"
+        )
+
+        prompt_emb = np.array(response.data[0].embedding, dtype=np.float32)
+
+        # 🔥 Función similitud
+        def cosine_similarity(a, b):
+            return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+        best_movie = None
+        max_sim = -1
+
+        for movie in Movie.objects.all():
+            if not movie.emb:
+                continue
+
+            movie_emb = np.frombuffer(movie.emb, dtype=np.float32)
+            sim = cosine_similarity(prompt_emb, movie_emb)
+
+            if sim > max_sim:
+                max_sim = sim
+                best_movie = movie
+
+        result = best_movie
+
+    return render(request, 'recommend.html', {'result': result})
