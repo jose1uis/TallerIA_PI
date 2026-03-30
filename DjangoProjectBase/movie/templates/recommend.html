@@ -9,5 +9,6 @@
 {% if result %}
     <h3>Película recomendada:</h3>
     <p>{{ result.title }}</p>
+    <p>{{ result.description }}</p>
     <img src="{{ result.image.url }}" width="200">
 {% endif %}
