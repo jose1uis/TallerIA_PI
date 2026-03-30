@@ -1,0 +1,49 @@
+# 🔐 Variables de entorno (MUY IMPORTANTE)
+.env
+
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 🧠 Archivos compilados
+*.pyo
+*.pyd
+
+# 📦 Entornos virtuales
+venv/
+env/
+ENV/
+
+# 📁 Logs y temporales
+*.log
+*.tmp
+*.bak
+*.swp
+
+# 📊 Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 🧪 Testing / coverage
+.coverage
+htmlcov/
+
+# 🧰 IDEs
+.vscode/
+.idea/
+
+# 📂 Static compilado
+staticfiles/
+
+# 🔥 Archivos binarios innecesarios
+*.pyc
+*.pkl
+*.npy
+
+# 🚫 Cache de Django
+*.sqlite3-journal
+
+# 🔐 Otros secretos
+secrets.json
